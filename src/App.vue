@@ -13,12 +13,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import Job from '@/types/Job'
-import OrderTerm from '@/types/OrderTerm'
+import { ref } from 'vue'
+import Job from './types/Job'
+import OrderTerm from './types/OrderTerm'
 import JobList from './components/JobList.vue'
 
-export default defineComponent({
+export default {
   name: 'App',
   components: { JobList },
   setup() {
@@ -37,7 +37,7 @@ export default defineComponent({
 
     return { jobs, order, handleClick }
   }
-});
+}
 </script>
 
 <style>

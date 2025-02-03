@@ -2,7 +2,7 @@
     <div class="job-list">
       <p>Ordered by {{ order }}</p>
       <ul>
-        <li v-for="job in jobs" :key="job.id">
+        <li v-for="job in orderedJobs" :key="job.id">
           <h2>{{ job.title }} in {{ job.location }}</h2>
           <div class="salary">
             <p>{{ job.salary }} rupees</p>
@@ -16,11 +16,11 @@
   </template>
   
   <script lang="ts">
-  import { defineComponent, PropType } from 'vue'
-  import Job from '@/types/Job'
-  import OrderTerm from '@/types/OrderTerm'
+  import { PropType, computed } from 'vue'
+  import Job from './types/Job'
+  import OrderTerm from './types/OrderTerm'
   
-  export default defineComponent({
+  export default {
     props: {
       jobs: {
         type: Array as PropType<Job[]>,
@@ -32,9 +32,15 @@
       }
     },
     setup(props) {
-      console.log(props.jobs)
+      const orderedJobs = computed(() => {
+        return [...props.jobs].sort((a: Job, b: Job) => {
+          return a[props.order] > b[props.order] ? 1 : -1
+        })
+      })
+  
+      return { orderedJobs }
     },
-  })
+  }
   </script>
   
   <style scoped>
@@ -43,7 +49,7 @@
       margin: 40px auto;
     }
     .job-list ul {
-      padding: 0
+      padding: 0;
     }
     .job-list li {
       list-style-type: none;
@@ -59,12 +65,10 @@
     .salary {
       display: flex;
     }
-    .salary img {
-      width: 30px;
-    }
     .salary p {
       color: #17bf66;
       font-weight: bold;
       margin: 10px 4px;
     }
   </style>
+  
